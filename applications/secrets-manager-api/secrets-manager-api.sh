@@ -21,4 +21,4 @@ source /etc/environment
 
 echo '==> Start our api and configure as a daemon using pm2'
 cd /var/secrets-manager-api
-run AWS.SecretMgr
+start AWS.SecretMgr
