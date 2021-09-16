@@ -4,6 +4,21 @@ echo '=============== Staring init script for Secrets Manager API ==============
 # save all env for debugging
 printenv > /var/log/colony-vars-"$(basename "$BASH_SOURCE" .sh)".txt
 
+# Install dotnet core and dependencies
+wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+# Install the .Net Core framework, set the path, and show the version of core installed.
+apt-get install -y apt-transport-https
+apt-get update
+apt-get install -y dotnet-sdk-3.1 && \
+    export PATH=$PATH:$HOME/dotnet && \
+    dotnet --version
+apt-get update
+apt-get install -y aspnetcore-runtime-3.1
+
+
 echo '==> Installing Apache'
 sudo apt update
 echo 'Updated'
@@ -27,6 +42,6 @@ echo 'API_BUILD_NUMBER='$API_BUILD_NUMBER >> /etc/environment
 echo 'API_PORT='$API_PORT >> /etc/environment
 # source /etc/environment
 
-echo '==> Start our api and configure as a daemon using pm2'
+echo '==> Start our api'
 cd /var/secrets-manager-api
-start AWS.SecretMgr
+./AWS.SecretMgr
