@@ -18,8 +18,8 @@ tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/secrets-ma
 echo 'RELEASE_NUMBER='$RELEASE_NUMBER >> /etc/environment
 echo 'API_BUILD_NUMBER='$API_BUILD_NUMBER >> /etc/environment
 echo 'API_PORT='$API_PORT >> /etc/environment
-source /etc/environment
+# source /etc/environment
 
 echo '==> Start our api and configure as a daemon using pm2'
-cd /var/secrets-manager-api
-start AWS.SecretMgr
+# cd /var/secrets-manager-api
+# start AWS.SecretMgr
