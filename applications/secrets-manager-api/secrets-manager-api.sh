@@ -16,15 +16,11 @@ sudo systemctl enable apache2
 sudo systemctl start apache2
 sudo systemctl status apache2
 
-# sudo yum install -y httpd
-# sudo systemctl start httpd
-# sudo systemctl enable httpd
-
 echo '==> Extract api artifact to /var/secrets-manager-api'
-# mkdir $ARTIFACTS_PATH/drop
-# tar -xvf $ARTIFACTS_PATH/secrets-manager-api.tar.gz -C $ARTIFACTS_PATH/drop/
-# mkdir /var/secrets-manager-api/
-# tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/secrets-manager-api
+mkdir $ARTIFACTS_PATH/drop
+tar -xvf $ARTIFACTS_PATH/secrets-manager-api.tar.gz -C $ARTIFACTS_PATH/drop/
+mkdir /var/secrets-manager-api/
+tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/secrets-manager-api
 
 echo 'RELEASE_NUMBER='$RELEASE_NUMBER >> /etc/environment
 echo 'API_BUILD_NUMBER='$API_BUILD_NUMBER >> /etc/environment
@@ -32,5 +28,5 @@ echo 'API_PORT='$API_PORT >> /etc/environment
 # source /etc/environment
 
 echo '==> Start our api and configure as a daemon using pm2'
-# cd /var/secrets-manager-api
-# start AWS.SecretMgr
+cd /var/secrets-manager-api
+start AWS.SecretMgr
