@@ -5,6 +5,17 @@ echo '=============== Staring init script for Secrets Manager API ==============
 printenv > /var/log/colony-vars-"$(basename "$BASH_SOURCE" .sh)".txt
 
 echo '==> Installing Apache'
+sudo apt update
+echo 'Updated'
+sudo apt install apache2
+echo 'Installed Apache'
+sudo ufw app list
+sudo ufw allow 'Apache'
+sudo ufw status
+sudo systemctl enable apache2
+sudo systemctl start apache2
+sudo systemctl status apache2
+
 # sudo yum install -y httpd
 # sudo systemctl start httpd
 # sudo systemctl enable httpd
