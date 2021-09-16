@@ -7,7 +7,7 @@ printenv > /var/log/colony-vars-"$(basename "$BASH_SOURCE" .sh)".txt
 echo '==> Installing Apache'
 sudo apt update
 echo 'Updated'
-sudo apt install apache2
+sudo apt install -y apache2
 echo 'Installed Apache'
 sudo ufw app list
 sudo ufw allow 'Apache'
