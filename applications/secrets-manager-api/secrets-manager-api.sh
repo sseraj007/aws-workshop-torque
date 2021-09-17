@@ -19,23 +19,29 @@ apt-get update
 apt-get install -y aspnetcore-runtime-3.1
 
 
-echo '==> Installing Apache'
-sudo apt update
-echo 'Updated'
-sudo apt install -y apache2
-echo 'Installed Apache'
-sudo ufw app list
-sudo ufw allow 'Apache'
-sudo ufw status
-sudo systemctl enable apache2
-sudo systemctl start apache2
-sudo systemctl status apache2
+# echo '==> Installing Apache'
+# sudo apt update
+# echo 'Updated'
+# sudo apt install -y apache2
+# echo 'Installed Apache'
+# sudo ufw app list
+# sudo ufw allow 'Apache'
+# sudo ufw status
+# sudo systemctl enable apache2
+# sudo systemctl start apache2
+# sudo systemctl status apache2
 
-echo '==> Extract api artifact to /var/secrets-manager-api'
+echo '===> Installing Nginx'
+sudo apt update
+sudo apt install -y nginx
+sudo service nginx start
+
+
+echo '==> Extract api artifact to /var/www/secrets-manager-api'
 mkdir $ARTIFACTS_PATH/drop
 tar -xvf $ARTIFACTS_PATH/secrets-manager-api.tar.gz -C $ARTIFACTS_PATH/drop/
-mkdir /var/secrets-manager-api/
-tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/secrets-manager-api
+mkdir /var/www/secrets-manager-api/
+tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/www/secrets-manager-api
 
 echo 'RELEASE_NUMBER='$RELEASE_NUMBER >> /etc/environment
 echo 'API_BUILD_NUMBER='$API_BUILD_NUMBER >> /etc/environment
@@ -43,5 +49,5 @@ echo 'API_PORT='$API_PORT >> /etc/environment
 # source /etc/environment
 
 echo '==> Start our api'
-cd /var/secrets-manager-api
-./AWS.SecretMgr
+cd /var/www/secrets-manager-api
+# ./AWS.SecretMgr
