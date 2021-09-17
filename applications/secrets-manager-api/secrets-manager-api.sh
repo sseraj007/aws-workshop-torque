@@ -39,9 +39,9 @@ sudo service nginx start
 cd /etc/nginx/sites-available
 cat << EOF > default
 server {
-    listen        3000;
-    server_name   elb.amazonaws.com;
-    location {
+    listen        3001;
+    server_name   *.com;
+    location / {
         proxy_pass         http://localhost:5000;
         proxy_http_version 1.1;
         proxy_set_header   Upgrade $http_upgrade;
