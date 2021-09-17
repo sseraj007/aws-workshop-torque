@@ -37,7 +37,7 @@ sudo apt install -y nginx
 sudo service nginx start
 
 cd /etc/nginx/sites-available
-cat default > EOF <<
+cat << EOF > default
 server {
     listen        3000;
     server_name   elb.amazonaws.com;
@@ -61,7 +61,7 @@ sudo nginx -s reload
 echo 'reload successful'
 
 cd /etc/systemd/system
-cat >> kestrel-secret-manager-api.service << EOF
+cat << EOF > kestrel-secret-manager-api.service
 [Unit]
 Description=Secrets Manager API
 
