@@ -37,11 +37,11 @@ sudo apt install -y nginx
 sudo service nginx start
 
 cd /etc/nginx/sites-available
-cat default >> EOF << 
+cat default > EOF <<
 server {
-    listen        80;
-    server_name   YOUR_DOMAIN;
-    location / {
+    listen        3000;
+    server_name   elb.amazonaws.com;
+    location {
         proxy_pass         http://localhost:5000;
         proxy_http_version 1.1;
         proxy_set_header   Upgrade $http_upgrade;
@@ -54,7 +54,7 @@ server {
 }
 EOF
 
-echo 'file modified'
+echo 'sites available modified'
 
 sudo nginx -s reload
 
