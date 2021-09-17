@@ -36,6 +36,59 @@ sudo apt update
 sudo apt install -y nginx
 sudo service nginx start
 
+cd /etc/nginx/sites-available
+cat default >> EOF << 
+server {
+    listen        80;
+    server_name   YOUR_DOMAIN;
+    location / {
+        proxy_pass         http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection keep-alive;
+        proxy_set_header   Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+    }
+}
+EOF
+
+echo 'file modified'
+
+sudo nginx -s reload
+
+echo 'reload successful'
+
+cd /etc/systemd/system
+cat >> kestrel-secret-manager-api.service << EOF
+[Unit]
+Description=Secrets Manager API
+
+[Service]
+WorkingDirectory=/var/www/secrets-manager-api
+ExecStart=/usr/bin/dotnet /var/www/secrets-manager-api/AWS.SecretMgr.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-example
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+
+EOF
+
+echo 'service created'
+
+sudo systemctl enable kestrel-secret-manager-api.service
+sudo systemctl start kestrel-secret-manager-api.service
+
+sudo systemctl statuss kestrel-secret-manager-api.service
+
 
 echo '==> Extract api artifact to /var/www/secrets-manager-api'
 mkdir $ARTIFACTS_PATH/drop
@@ -46,8 +99,4 @@ tar -xvf $ARTIFACTS_PATH/drop/drop/secrets-manager-api.tar.gz -C /var/www/secret
 echo 'RELEASE_NUMBER='$RELEASE_NUMBER >> /etc/environment
 echo 'API_BUILD_NUMBER='$API_BUILD_NUMBER >> /etc/environment
 echo 'API_PORT='$API_PORT >> /etc/environment
-# source /etc/environment
-
-echo '==> Start our api'
-cd /var/www/secrets-manager-api
-# ./AWS.SecretMgr
+source /etc/environment
