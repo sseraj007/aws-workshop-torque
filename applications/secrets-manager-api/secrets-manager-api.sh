@@ -41,6 +41,7 @@ cat << EOF > default
 server {
     listen        3001;
     server_name   *.com;
+    root /var/www/secrets-manager-api;
     location / {
         proxy_pass         http://localhost:5000;
         proxy_http_version 1.1;
