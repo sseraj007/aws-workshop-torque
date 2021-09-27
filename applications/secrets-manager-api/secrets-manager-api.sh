@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo '=============== Staring init script for Secrets Manager API ==============='
 
 # save all env for debugging
